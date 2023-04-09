@@ -112,11 +112,9 @@ app.delete("/deleteall/:userid",(req,res)=>{
 app.get("/search/:userid/:text",(req,res)=>{
   var id = req.params.userid;
   var text = req.params.text;
+
   const sql = `SELECT * FROM ${id} WHERE note LIKE "${text}%"`;
   db.query(sql,(err,result)=>{
-    if(text==''){
-      res.send([]);
-    }
     if(err){
       res.status(404).send('some error');
     }
@@ -126,6 +124,21 @@ app.get("/search/:userid/:text",(req,res)=>{
     };
     res.send(response);
   });
+});
+
+app.get("/search/:userid/",(req,res)=>{
+  var id = req.params.userid;
+    const sql = `SELECT * FROM ${id}`;
+    db.query(sql, (err, result) => {
+      if (err) {
+        res.status(404).send('some error');
+      }
+      const response = {
+        length: result.length,
+        data: result
+      };
+      res.send(response);
+    });
 });
 
 // get data
