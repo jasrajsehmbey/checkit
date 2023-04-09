@@ -59,6 +59,8 @@ app.post('/insert/:userid',(req,res)=>{
     });
 });
 
+
+
 //update data to isChecked 1
 app.patch('/update/:userid',(req,res)=>{
     var id = req.params.userid;
@@ -105,6 +107,27 @@ app.delete("/deleteall/:userid",(req,res)=>{
 
 });
   
+
+//search the note
+app.get("/search/:userid/:text",(req,res)=>{
+  var id = req.params.userid;
+  var text = req.params.text;
+  const sql = `SELECT * FROM ${id} WHERE note LIKE "${text}%"`;
+  db.query(sql,(err,result)=>{
+    if(text==''){
+      res.send([]);
+    }
+    if(err){
+      res.status(404).send('some error');
+    }
+    const response = {
+      length: result.length,
+      data: result
+    };
+    res.send(response);
+  });
+});
+
 // get data
   app.get("/get/:userid", (req, res) => {
     var id = req.params.userid;
