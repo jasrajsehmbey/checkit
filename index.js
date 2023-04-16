@@ -9,8 +9,8 @@ const db = mysql.createConnection({
     database: 'nodemysql',
 });
 
-//connect to mysql
 
+//connect to mysql
 db.connect(err=>{
     if(err){
         throw err;
@@ -40,6 +40,7 @@ app.get('/:userid',(req,res)=>{
     db.query(sql,err=>{
         if(err){
             res.status(404).send('database already created');
+            
         }
         const temp = `${id} table created`;
         res.send(temp);
