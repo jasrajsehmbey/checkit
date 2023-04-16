@@ -14,8 +14,9 @@ const db = mysql.createConnection({
 db.connect(err=>{
     if(err){
         throw err;
-    }
+    }else{
     console.log('mysql connected')
+    }
 })
 
 const app = express();
@@ -28,8 +29,9 @@ app.get("/createdb",(req,res)=>{
     db.query(sql,(err)=>{
         if(err){
             throw err;
+        }else{
+          res.send("database created");
         }
-        res.send("database created");
     });
 });
 
@@ -41,9 +43,10 @@ app.get('/:userid',(req,res)=>{
         if(err){
             res.status(404).send('database already created');
             
+        }else{
+          const temp = `${id} table created`;
+          res.send(temp);
         }
-        const temp = `${id} table created`;
-        res.send(temp);
     });
 });
 
@@ -55,8 +58,9 @@ app.post('/insert/:userid',(req,res)=>{
     db.query(`INSERT INTO ${id} SET ?`,data,(err,result)=>{
         if(err){
             res.status(404).send('some error');
+        }else{
+          res.send(result);
         }
-        res.send(result);
     });
 });
 
@@ -72,10 +76,28 @@ app.patch('/update/:userid',(req,res)=>{
     db.query(sql,(err)=>{
         if (err) {
             res.status(404).send('some error');
+          }else{
+            const temp = `${note} from ${id} table is changed`;
+            res.send(temp);
           }
-          const temp = `${note} from ${id} table is changed`;
-          res.send(temp);
     });
+});
+
+//edit the note
+app.patch('/editnote/:userid',(req,res)=>{
+  var id = req.params.userid;
+  var note = req.body.note;
+  var newnote = req.body.newnote;
+  const sql = `UPDATE ${id} SET note = "${newnote}" WHERE note = "${note}"`;
+  db.query(sql,(err)=>{
+    if (err) {
+        res.status(404).send('some error');
+      }else{
+        const temp = `${note} from ${id} table is changed to ${newnote}`;
+        res.send(temp);
+      }
+  });
+
 });
 
 
@@ -87,9 +109,10 @@ app.delete("/delete/:userid", (req, res) => {
     db.query(sql, (err) => {
       if (err) {
         res.status(404).send('some error');
+      }else{
+        const temp = `${note} from ${id} table deleted`;
+        res.send(temp);
       }
-      const temp = `${note} from ${id} table deleted`;
-      res.send(temp);
     });
   });
 
@@ -101,9 +124,10 @@ app.delete("/deleteall/:userid",(req,res)=>{
     db.query(sql, (err) => {
         if (err) {
           res.status(404).send('some error');
+        }else{
+          const temp = `${id} table deleted`;
+          res.send(temp);
         }
-        const temp = `${id} table deleted`;
-        res.send(temp);
       });
 
 });
@@ -118,12 +142,13 @@ app.get("/search/:userid/:text",(req,res)=>{
   db.query(sql,(err,result)=>{
     if(err){
       res.status(404).send('some error');
-    }
-    const response = {
-      length: result.length,
-      data: result
-    };
-    res.send(response);
+    }else{
+      const response = {
+        length: result.length,
+        data: result
+      };
+      res.send(response);
+  }
   });
 });
 
@@ -133,12 +158,13 @@ app.get("/search/:userid/",(req,res)=>{
     db.query(sql, (err, result) => {
       if (err) {
         res.status(404).send('some error');
-      }
-      const response = {
-        length: result.length,
-        data: result
-      };
-      res.send(response);
+      }else{
+        const response = {
+          length: result.length,
+          data: result
+        };
+        res.send(response);
+    }
     });
 });
 
@@ -149,8 +175,9 @@ app.get("/search/:userid/",(req,res)=>{
     db.query(sql, (err, result) => {
       if (err) {
         res.status(404).send('some error');
+      }else{
+        res.send(result);
       }
-      res.send(result);
     });
   });
 
