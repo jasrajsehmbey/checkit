@@ -3,10 +3,10 @@ const mysql = require('mysql')
 
 //create connections
 const db = mysql.createConnection({
-    host : 'localhost',
-    user : 'root',
-    password: 'system',
-    database: 'nodemysql',
+    host : 'sql6.freesqldatabase.com',
+    user : 'sql6631496',
+    password: 'bPILSXa1RR',
+    database: 'sql6631496',
 });
 
 
@@ -51,6 +51,7 @@ app.get('/:userid',(req,res)=>{
 });
 
 //insert into table
+//body -> {note: ""}
 app.post('/insert/:userid',(req,res)=>{
     const data = req.body;
     var id = req.params.userid;
@@ -97,7 +98,6 @@ app.patch('/editnote/:userid',(req,res)=>{
         res.send(temp);
       }
   });
-
 });
 
 
