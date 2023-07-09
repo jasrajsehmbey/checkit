@@ -1,12 +1,13 @@
 const express = require('express')
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 //create connections
 const db = mysql.createConnection({
-    host : 'sql6.freesqldatabase.com',
-    user : 'sql6631496',
-    password: 'bPILSXa1RR',
-    database: 'sql6631496',
+    host : 'containers-us-west-107.railway.app',
+    user : 'root',
+    password: 'Gn9fA7TGfn6C1zEaBGCP',
+    port: '5765',
+    database: 'railway',
 });
 
 
